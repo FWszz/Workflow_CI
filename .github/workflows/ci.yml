@@ -33,7 +33,7 @@ jobs:
             -P min_samples_leaf=2
 
       - name: Upload MLflow artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mlflow-runs
           path: mlruns/
