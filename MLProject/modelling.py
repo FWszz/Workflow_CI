@@ -36,7 +36,11 @@ if __name__ == '__main__':
     parser.add_argument('--min_samples_leaf',  type=int, default=2)
     args = parser.parse_args()
 
+    # Bersihkan environment MLflow yang di-inject GitHub Actions
+    os.environ.pop('MLFLOW_RUN_ID', None)
+    os.environ.pop('MLFLOW_EXPERIMENT_ID', None)
     mlflow.end_run()
+
     mlflow.set_experiment('Titanic-Survival-Prediction')
 
     data_path = os.path.join(os.path.dirname(__file__), 'titanic_preprocessing.csv')
@@ -51,7 +55,7 @@ if __name__ == '__main__':
         'random_state':      42,
     }
 
-    with mlflow.start_run(run_name='RandomForest_CI'):
+    with mlflow.start_run(run_name='RandomForest_CI', nested=False):
         model = RandomForestClassifier(**params)
         model.fit(X_train, y_train)
         y_pred  = model.predict(X_test)
